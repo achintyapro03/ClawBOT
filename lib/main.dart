@@ -4,7 +4,7 @@ import "package:controller_app/widgets/hook_switch.dart";
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 
-import "widgets/my_switch.dart";
+// import "widgets/my_switch.dart";
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 void main() {
@@ -48,19 +48,12 @@ class HomePageHook extends HookWidget {
     final power = useState(0.0);
     final onOff = useState(false);
     final lockPos = useState(false);
+    final isPlaying = useState(false);
 
     var stepQueryState =
-        List.generate(1, (_) => List.generate(5, (_) => useState(false)));
+        List.generate(15, (_) => List.generate(5, (_) => useState(false)));
 
-    // var stepQueryState = [
-    //   [
-    //     false,
-    //     false,
-    //     false,
-    //     false,
-    //     false,
-    //   ]
-    // ];
+    final List<bool> stdState = <bool>[false, true];
 
     useEffect(() {
       print("power changed to ${power.value}");
@@ -73,10 +66,24 @@ class HomePageHook extends HookWidget {
     }, [page.value]);
 
     useEffect(() {
-      print("onoff changed");
+      print("onoff changed to ${onOff.value}");
       return null;
-    }, []);
+    }, [onOff.value]);
 
+    useEffect(() {
+      print("lockPos changed to ${lockPos.value}");
+      return null;
+    }, [lockPos.value]);
+
+    useEffect(() {
+      if (isPlaying.value == true) {
+        print("yeah boi now playing");
+        print(stepQueryState);
+      }
+      print("Play / pause mode - ${isPlaying.value}");
+
+      return null;
+    }, [isPlaying.value]);
     // useEffect(() {
     //   print("page changed to ${page.value}");
     //   return null;
@@ -192,7 +199,10 @@ class HomePageHook extends HookWidget {
               Material(
                 child: (page.value == 0)
                     ? const StandardPage()
-                    : CustomPageHook(stepQueryState: stepQueryState),
+                    : CustomPageHook(
+                        stepQueryState: stepQueryState,
+                        isPlaying: isPlaying,
+                      ),
               ),
             ],
           ),

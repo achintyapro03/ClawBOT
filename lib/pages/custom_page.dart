@@ -20,39 +20,21 @@ var col = [
 // }
 
 class CustomPageHook extends HookWidget {
-  CustomPageHook({Key? key, required this.stepQueryState}) : super(key: key);
+  CustomPageHook(
+      {Key? key, required this.stepQueryState, required this.isPlaying})
+      : super(key: key);
 
   // final _formKey = GlobalKey<FormState>();
   var stepQueryState;
+  var isPlaying;
 
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    stepQueryState =
-        List.generate(15, (_) => List.generate(5, (_) => useState(false)));
-    // void addStepQuery(int numOfSteps) {
-    //   print("ola1");
-    //   // stepQueryState = List.generate(
-    //   //     numOfSteps, (_) => List.generate(5, (_) => useState(false)));
 
-    //   stepQueryState.clear();
-
-    //   for (int i = 0; i < numOfSteps; i++) {
-    //     var li = [];
-    //     for (int j = 0; j < 5; j++) {
-    //       print("in");
-    //       li.add(useState(false));
-    //     }
-    //     stepQueryState.add(li);
-    //   }
-    //   print("ola2");
-
-    //   print(stepQueryState);
-    // }
-
-    final isPlaying = useState(false);
     final numberOfSteps = useState("0");
     final intOfSteps = useState(0);
+    final myScrollController = ScrollController();
     return Material(
       child: Container(
         height: 500,
@@ -173,12 +155,15 @@ class CustomPageHook extends HookWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Scrollbar(
+                controller: myScrollController,
+
                 thumbVisibility: true, //always show scrollbar
                 thickness: 2, //width of scrollbar
                 scrollbarOrientation:
                     ScrollbarOrientation.right, //which side to show scrollbar
 
                 child: SingleChildScrollView(
+                  controller: myScrollController,
                   child: Container(
                     color: col[4],
                     margin: const EdgeInsets.symmetric(
@@ -229,7 +214,6 @@ class CustomPageHook extends HookWidget {
                   ),
                   onPressed: () {
                     isPlaying.value = !isPlaying.value;
-
                     // Handle button press
                   },
                   child: Row(

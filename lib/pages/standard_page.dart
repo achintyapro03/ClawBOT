@@ -69,16 +69,9 @@ class _StandardPageState extends State<StandardPage> {
                 ),
                 Row(
                   children: [
-                    MyToggleButton(
-                        key: GlobalKey<MyToggleButtonState>(), num: 1),
-                    MyToggleButton(
-                        key: GlobalKey<MyToggleButtonState>(), num: 2),
-                    MyToggleButton(
-                        key: GlobalKey<MyToggleButtonState>(), num: 3),
-                    MyToggleButton(
-                        key: GlobalKey<MyToggleButtonState>(), num: 4),
-                    MyToggleButton(
-                        key: GlobalKey<MyToggleButtonState>(), num: 5),
+                    for (int i = 0; i < 5; i++) ...[
+                      MyToggleButton(num: i + 1),
+                    ]
                   ],
                 ),
               ],
