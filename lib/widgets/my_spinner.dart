@@ -9,9 +9,15 @@ var col = [
   const Color.fromARGB(255, 69, 71, 80),
 ];
 
-class MySpinner extends StatelessWidget {
+class MySpinner extends StatefulWidget {
   const MySpinner({super.key});
 
+  @override
+  State<MySpinner> createState() => MySpinnerState();
+}
+
+class MySpinnerState extends State<MySpinner> {
+  int seconds = 0;
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -37,6 +43,11 @@ class MySpinner extends StatelessWidget {
             size: 25,
             color: Colors.white,
           ),
+          onChanged: (value) {
+            setState(() {
+              seconds = value.round();
+            });
+          },
           // iconColor: Colors.black,
 
           decoration: const InputDecoration(

@@ -9,8 +9,20 @@ var col = [
   const Color.fromARGB(255, 69, 71, 80)
 ];
 
-class StandardPage extends StatelessWidget {
-  const StandardPage({super.key});
+class StandardPage extends StatefulWidget {
+  const StandardPage({Key? key}) : super(key: key);
+
+  @override
+  State<StandardPage> createState() => _StandardPageState();
+}
+
+class _StandardPageState extends State<StandardPage> {
+  // final toggleKeyList = List<GlobalKey<MyToggleButtonState>>.filled(
+  //   5,
+  //   new GlobalKey<MyToggleButtonState>(),
+  // );
+
+  void createButtons() {}
 
   @override
   Widget build(BuildContext context) {
@@ -50,20 +62,23 @@ class StandardPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(25),
               color: const Color.fromARGB(255, 69, 71, 80),
             ),
-            child: const Column(
+            child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
                   children: [
-                    MyToggleButton(num: 1),
-                    MyToggleButton(num: 2),
-                    MyToggleButton(num: 3),
-                    MyToggleButton(num: 4),
-                    MyToggleButton(num: 5),
-
-                    // fingerNum.forEach((element) {  })
+                    MyToggleButton(
+                        key: GlobalKey<MyToggleButtonState>(), num: 1),
+                    MyToggleButton(
+                        key: GlobalKey<MyToggleButtonState>(), num: 2),
+                    MyToggleButton(
+                        key: GlobalKey<MyToggleButtonState>(), num: 3),
+                    MyToggleButton(
+                        key: GlobalKey<MyToggleButtonState>(), num: 4),
+                    MyToggleButton(
+                        key: GlobalKey<MyToggleButtonState>(), num: 5),
                   ],
                 ),
               ],

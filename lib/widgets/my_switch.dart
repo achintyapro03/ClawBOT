@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 /// Flutter code sample for [Switch].
 
 class MySwitch extends StatefulWidget {
-  const MySwitch({super.key});
+  MySwitch({Key? key, required this.light}) : super(key: key);
+  var light;
 
   @override
-  State<MySwitch> createState() => _MySwitchState();
+  State<MySwitch> createState() => MySwitchState();
 }
 
-class _MySwitchState extends State<MySwitch> {
-  bool light = false;
-
+class MySwitchState extends State<MySwitch> {
   @override
   Widget build(BuildContext context) {
     final MaterialStateProperty<Color?> trackColor =
@@ -40,18 +40,17 @@ class _MySwitchState extends State<MySwitch> {
         return null;
       },
     );
-
     return Switch(
-      value: light,
+      value: widget.light,
       overlayColor: overlayColor,
       trackColor: trackColor,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       thumbColor:
           const MaterialStatePropertyAll<Color>(Color.fromARGB(208, 0, 4, 14)),
       onChanged: (bool value) {
-        setState(() {
-          light = value;
-        });
+        // setState(() {
+        widget.light = value;
+        // });
       },
     );
   }

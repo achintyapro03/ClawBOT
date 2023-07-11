@@ -6,20 +6,20 @@ const List<Widget> icons = <Widget>[
 ];
 
 class MyToggleButton extends StatefulWidget {
-  const MyToggleButton({super.key, required this.num});
-
+  // const MyToggleButton({super.key, required this.num});
+  const MyToggleButton({Key? key, required this.num}) : super(key: key);
   final int num;
   @override
-  State<MyToggleButton> createState() => _MyToggleButtonState();
+  State<MyToggleButton> createState() => MyToggleButtonState();
 }
 
-class _MyToggleButtonState extends State<MyToggleButton> {
-  final List<bool> _selectedWeather = <bool>[false, true];
-  bool vertical = false;
+class MyToggleButtonState extends State<MyToggleButton> {
+  final List<bool> selectedState = <bool>[false, true];
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: widget.key,
       child: Column(
         children: [
           const SizedBox(width: 71),
@@ -37,8 +37,8 @@ class _MyToggleButtonState extends State<MyToggleButton> {
             onPressed: (int index) {
               setState(() {
                 // The button that is tapped is set to true, and the others to false.
-                for (int i = 0; i < _selectedWeather.length; i++) {
-                  _selectedWeather[i] = i == index;
+                for (int i = 0; i < selectedState.length; i++) {
+                  selectedState[i] = i == index;
                 }
               });
             },
@@ -48,7 +48,7 @@ class _MyToggleButtonState extends State<MyToggleButton> {
             fillColor: Colors.amber[200],
             color: Colors.amber[400],
             borderColor: Colors.amber,
-            isSelected: _selectedWeather,
+            isSelected: selectedState,
             children: icons,
           ),
         ],

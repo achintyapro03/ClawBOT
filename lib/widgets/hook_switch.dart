@@ -1,36 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 /// Flutter code sample for [Switch].
 
-void main() => runApp(const SwitchApp());
+class SwitchHook extends HookWidget {
+  const SwitchHook({super.key, required this.light});
 
-class SwitchApp extends StatelessWidget {
-  const SwitchApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Switch Sample')),
-        body: const Center(
-          child: SwitchExample(),
-        ),
-      ),
-    );
-  }
-}
-
-class SwitchExample extends StatefulWidget {
-  const SwitchExample({super.key});
-
-  @override
-  State<SwitchExample> createState() => _SwitchExampleState();
-}
-
-class _SwitchExampleState extends State<SwitchExample> {
-  bool light = true;
-
+  final light;
   @override
   Widget build(BuildContext context) {
     final MaterialStateProperty<Color?> trackColor =
@@ -59,16 +35,17 @@ class _SwitchExampleState extends State<SwitchExample> {
         return null;
       },
     );
-
     return Switch(
-      value: light,
+      value: light.value,
       overlayColor: overlayColor,
       trackColor: trackColor,
-      thumbColor: const MaterialStatePropertyAll<Color>(Colors.black),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      thumbColor:
+          const MaterialStatePropertyAll<Color>(Color.fromARGB(208, 0, 4, 14)),
       onChanged: (bool value) {
-        setState(() {
-          light = value;
-        });
+        // setState(() {
+        light.value = value;
+        // });
       },
     );
   }

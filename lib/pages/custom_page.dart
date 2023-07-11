@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:flutter_hooks/flutter_hooks.dart';
 import '../widgets/step_query.dart';
 
 // import "../widgets/my_toggle.dart";
@@ -11,20 +12,47 @@ var col = [
   const Color.fromARGB(255, 69, 71, 80),
 ];
 
-class CustomPage extends StatefulWidget {
-  const CustomPage({super.key});
+// class CustomPage extends StatefulWidget {
+//   const CustomPage({super.key});
 
-  @override
-  State<CustomPage> createState() => _CustomPageState();
-}
+//   @override
+//   State<CustomPage> createState() => _CustomPageState();
+// }
 
-class _CustomPageState extends State<CustomPage> {
+class CustomPageHook extends HookWidget {
+  CustomPageHook({Key? key, required this.stepQueryState}) : super(key: key);
+
   // final _formKey = GlobalKey<FormState>();
-
-  bool isPlaying = false;
+  var stepQueryState;
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+    stepQueryState =
+        List.generate(15, (_) => List.generate(5, (_) => useState(false)));
+    // void addStepQuery(int numOfSteps) {
+    //   print("ola1");
+    //   // stepQueryState = List.generate(
+    //   //     numOfSteps, (_) => List.generate(5, (_) => useState(false)));
+
+    //   stepQueryState.clear();
+
+    //   for (int i = 0; i < numOfSteps; i++) {
+    //     var li = [];
+    //     for (int j = 0; j < 5; j++) {
+    //       print("in");
+    //       li.add(useState(false));
+    //     }
+    //     stepQueryState.add(li);
+    //   }
+    //   print("ola2");
+
+    //   print(stepQueryState);
+    // }
+
+    final isPlaying = useState(false);
+    final numberOfSteps = useState("0");
+    final intOfSteps = useState(0);
     return Material(
       child: Container(
         height: 500,
@@ -62,57 +90,67 @@ class _CustomPageState extends State<CustomPage> {
               height: 5,
               width: 500,
             ),
-            Container(
-              width: 300,
-              height: 70,
-              decoration: BoxDecoration(
-                color: col[4],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Expanded(
-                    child: TextFormField(
-                      cursorColor: col[1],
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: "Enter num of steps",
-                        labelText: "Total Steps",
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 5,
-                          horizontal: 10,
+            Form(
+              key: _formKey,
+              child: Container(
+                width: 300,
+                height: 70,
+                decoration: BoxDecoration(
+                  color: col[4],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    Expanded(
+                      child: TextFormField(
+                        onChanged: (value) {
+                          print(int.parse(value));
+                          numberOfSteps.value = value;
+                          print("olololol ${numberOfSteps.value} ");
+                        },
+                        // initialValue: "0",
+                        cursorColor: col[1],
+                        decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "Enter num of steps",
+                          labelText: "Total Steps",
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 5,
+                            horizontal: 10,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 30,
-                  ), // Add some spacing between the text field and the button
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber[200],
-                    ),
-                    onPressed: () {
-                      // Handle button press
-                    },
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(
-                        color: col[0],
-                        fontWeight: FontWeight.bold,
+                    const SizedBox(
+                      width: 30,
+                    ), // Add some spacing between the text field and the button
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber[200],
+                      ),
+                      onPressed: () {
+                        // addStepQuery(int.parse(numberOfSteps.value));
+                        intOfSteps.value = int.parse(numberOfSteps.value);
+                      },
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(
+                          color: col[0],
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                ],
+                    const SizedBox(
+                      width: 15,
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(
@@ -145,16 +183,14 @@ class _CustomPageState extends State<CustomPage> {
                     color: col[4],
                     margin: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10),
-                    child: const Column(
+                    child: Column(
                       children: [
-                        StepQuery(num: 1),
-                        StepQuery(num: 2),
-                        StepQuery(num: 3),
-                        StepQuery(num: 4),
-                        StepQuery(num: 5),
-                        StepQuery(num: 6),
-                        StepQuery(num: 7),
-                        StepQuery(num: 8),
+                        for (int i = 0; i <= intOfSteps.value; i++) ...[
+                          StepQueryHook(
+                            nums: i + 1,
+                            lights: stepQueryState[i],
+                          )
+                        ],
                       ],
                     ),
                   ),
@@ -192,14 +228,13 @@ class _CustomPageState extends State<CustomPage> {
                     backgroundColor: Colors.amber[200],
                   ),
                   onPressed: () {
-                    setState(() {
-                      isPlaying = !isPlaying;
-                    });
+                    isPlaying.value = !isPlaying.value;
+
                     // Handle button press
                   },
                   child: Row(
                     children: [
-                      (isPlaying)
+                      (isPlaying.value)
                           ? Icon(
                               Icons.stop,
                               color: col[1],
@@ -212,7 +247,7 @@ class _CustomPageState extends State<CustomPage> {
                         width: 10,
                       ),
                       Text(
-                        (!isPlaying) ? "Start" : "Stop",
+                        (!isPlaying.value) ? "Start" : "Stop",
                         style: TextStyle(
                           color: col[0],
                           fontWeight: FontWeight.bold,

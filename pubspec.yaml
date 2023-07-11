@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^5.1.0
   flutter_spinbox: ^0.13.1
   number_selection: ^1.0.0
+  flutter_hooks: ^0.19.0
 
 dev_dependencies:
   flutter_test:
