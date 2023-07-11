@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_spinbox/flutter_spinbox.dart';
 import '../widgets/step_query.dart';
 
 // import "../widgets/my_toggle.dart";
@@ -36,7 +37,6 @@ class CustomPageHook extends HookWidget {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
 
-    final numberOfSteps = useState("0");
     final intOfSteps = useState(0);
     final myScrollController = ScrollController();
     return Material(
@@ -78,68 +78,67 @@ class CustomPageHook extends HookWidget {
             ),
             AbsorbPointer(
               absorbing: isPlaying.value,
-              child: Form(
-                key: _formKey,
-                child: Container(
-                  width: 310,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    color: col[4],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 15,
+              child: Container(
+                width: 200,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: col[4],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "No of Steps :",
+                      style: TextStyle(
+                        color: col[3],
                       ),
-                      Expanded(
-                        child: TextField(
-                          onChanged: (value) {
-                            print(int.parse(value));
-                            numberOfSteps.value = value;
-                            print("olololol ${numberOfSteps.value} ");
-                          },
-                          // initialValue: "0",
-                          cursorColor: col[1],
-                          decoration: const InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: "Enter num of steps",
-                            labelText: "Total Steps",
-                            contentPadding: EdgeInsets.symmetric(
-                              vertical: 5,
-                              horizontal: 10,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: SpinBox(
+                        min: 0,
+                        max: 50,
+                        value: 0,
+                        spacing: 1,
+                        direction: Axis.horizontal,
+                        textStyle: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        incrementIcon: const Icon(
+                          Icons.keyboard_arrow_up,
+                          size: 25,
+                          color: Colors.white,
+                        ),
+                        decrementIcon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 25,
+                          color: Colors.white,
+                        ),
+                        onChanged: (value) {
+                          intOfSteps.value = value.round();
+                        },
+                        decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              width: 4,
+                              color: Colors.white,
                             ),
                           ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 30),
                         ),
                       ),
-                      const SizedBox(
-                        width: 30,
-                      ), // Add some spacing between the text field and the button
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.amber[200],
-                        ),
-                        onPressed: () {
-                          // addStepQuery(int.parse(numberOfSteps.value));
-                          intOfSteps.value = int.parse(numberOfSteps.value) - 1;
-                        },
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(
-                            color: col[0],
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+                // const SizedBox(width: 60),
               ),
             ),
             const SizedBox(
@@ -179,7 +178,7 @@ class CustomPageHook extends HookWidget {
                           horizontal: 10.0, vertical: 10),
                       child: Column(
                         children: [
-                          for (int i = 0; i <= intOfSteps.value; i++) ...[
+                          for (int i = 0; i < intOfSteps.value; i++) ...[
                             StepQueryHook(
                               nums: i + 1,
                               lights: stepQueryState[i],
