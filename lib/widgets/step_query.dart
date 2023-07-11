@@ -36,12 +36,14 @@ class StepQueryHook extends HookWidget {
           ),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               height: 146,
-              width: 10,
+              width: 20,
               color: Colors.amber[100],
-              child: Text(nums.toString()),
+              child: Center(child: Text(nums.toString())),
             ),
             for (int i = 0; i < 5; i++) ...[
               RotatedBox(
@@ -65,11 +67,6 @@ class StepQueryHook extends HookWidget {
               width: 13,
               height: 146,
               color: col[4],
-            ),
-            Container(
-              width: 10,
-              height: 146,
-              color: Colors.amber[100],
             ),
           ],
         ),

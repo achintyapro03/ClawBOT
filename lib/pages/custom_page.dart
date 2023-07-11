@@ -37,7 +37,7 @@ class CustomPageHook extends HookWidget {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
 
-    final intOfSteps = useState(0);
+    final intOfSteps = useState(1);
     final myScrollController = ScrollController();
     return Material(
       child: Container(
@@ -103,9 +103,9 @@ class CustomPageHook extends HookWidget {
                     ),
                     Expanded(
                       child: SpinBox(
-                        min: 0,
-                        max: 50,
-                        value: 0,
+                        min: 1,
+                        max: 15,
+                        value: 1,
                         spacing: 1,
                         direction: Axis.horizontal,
                         textStyle: const TextStyle(
