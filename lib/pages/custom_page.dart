@@ -21,11 +21,15 @@ var col = [
 
 class CustomPageHook extends HookWidget {
   CustomPageHook(
-      {Key? key, required this.stepQueryState, required this.isPlaying})
+      {Key? key,
+      required this.stepQueryState,
+      required this.secondsState,
+      required this.isPlaying})
       : super(key: key);
 
   // final _formKey = GlobalKey<FormState>();
   var stepQueryState;
+  var secondsState;
   var isPlaying;
 
   @override
@@ -72,66 +76,69 @@ class CustomPageHook extends HookWidget {
               height: 5,
               width: 500,
             ),
-            Form(
-              key: _formKey,
-              child: Container(
-                width: 300,
-                height: 70,
-                decoration: BoxDecoration(
-                  color: col[4],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        onChanged: (value) {
-                          print(int.parse(value));
-                          numberOfSteps.value = value;
-                          print("olololol ${numberOfSteps.value} ");
-                        },
-                        // initialValue: "0",
-                        cursorColor: col[1],
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          hintText: "Enter num of steps",
-                          labelText: "Total Steps",
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 5,
-                            horizontal: 10,
+            AbsorbPointer(
+              absorbing: isPlaying.value,
+              child: Form(
+                key: _formKey,
+                child: Container(
+                  width: 310,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: col[4],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Expanded(
+                        child: TextField(
+                          onChanged: (value) {
+                            print(int.parse(value));
+                            numberOfSteps.value = value;
+                            print("olololol ${numberOfSteps.value} ");
+                          },
+                          // initialValue: "0",
+                          cursorColor: col[1],
+                          decoration: const InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: "Enter num of steps",
+                            labelText: "Total Steps",
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 5,
+                              horizontal: 10,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 30,
-                    ), // Add some spacing between the text field and the button
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.amber[200],
-                      ),
-                      onPressed: () {
-                        // addStepQuery(int.parse(numberOfSteps.value));
-                        intOfSteps.value = int.parse(numberOfSteps.value);
-                      },
-                      child: Text(
-                        'Submit',
-                        style: TextStyle(
-                          color: col[0],
-                          fontWeight: FontWeight.bold,
+                      const SizedBox(
+                        width: 30,
+                      ), // Add some spacing between the text field and the button
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.amber[200],
+                        ),
+                        onPressed: () {
+                          // addStepQuery(int.parse(numberOfSteps.value));
+                          intOfSteps.value = int.parse(numberOfSteps.value) - 1;
+                        },
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(
+                            color: col[0],
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                  ],
+                      const SizedBox(
+                        width: 15,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -147,36 +154,40 @@ class CustomPageHook extends HookWidget {
             const SizedBox(
               height: 10,
             ),
-            Container(
-              height: 160,
-              width: 300,
-              decoration: BoxDecoration(
-                color: col[4],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Scrollbar(
-                controller: myScrollController,
-
-                thumbVisibility: true, //always show scrollbar
-                thickness: 2, //width of scrollbar
-                scrollbarOrientation:
-                    ScrollbarOrientation.right, //which side to show scrollbar
-
-                child: SingleChildScrollView(
+            AbsorbPointer(
+              absorbing: isPlaying.value,
+              child: Container(
+                height: 160,
+                width: 310,
+                decoration: BoxDecoration(
+                  color: col[4],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Scrollbar(
                   controller: myScrollController,
-                  child: Container(
-                    color: col[4],
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 10),
-                    child: Column(
-                      children: [
-                        for (int i = 0; i <= intOfSteps.value; i++) ...[
-                          StepQueryHook(
-                            nums: i + 1,
-                            lights: stepQueryState[i],
-                          )
+
+                  thumbVisibility: true, //always show scrollbar
+                  thickness: 2, //width of scrollbar
+                  scrollbarOrientation:
+                      ScrollbarOrientation.right, //which side to show scrollbar
+
+                  child: SingleChildScrollView(
+                    controller: myScrollController,
+                    child: Container(
+                      color: col[4],
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 10),
+                      child: Column(
+                        children: [
+                          for (int i = 0; i <= intOfSteps.value; i++) ...[
+                            StepQueryHook(
+                              nums: i + 1,
+                              lights: stepQueryState[i],
+                              seconds: secondsState[i],
+                            )
+                          ],
                         ],
-                      ],
+                      ),
                     ),
                   ),
                 ),

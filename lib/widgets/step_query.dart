@@ -14,12 +14,17 @@ var col = [
 ];
 
 class StepQueryHook extends HookWidget {
-  const StepQueryHook({Key? key, required this.nums, required this.lights})
-      : super(key: key);
+  const StepQueryHook({
+    Key? key,
+    required this.nums,
+    required this.lights,
+    required this.seconds,
+  }) : super(key: key);
 
   // const StepQueryHook({super.key, required this.num});
   final int nums;
   final lights;
+  final seconds;
 
   @override
   Widget build(BuildContext context) {
@@ -35,18 +40,9 @@ class StepQueryHook extends HookWidget {
             Container(
               height: 146,
               width: 10,
-              color: Colors.amber[200],
+              color: Colors.amber[100],
               child: Text(nums.toString()),
             ),
-            // RotatedBox(
-            //   quarterTurns: 3,
-            //   child: Container(
-            //     width: 146,
-            //     color: col[4],
-            //     child: SwitchHook(light: lights[0]),
-            //   ),
-            // ),
-
             for (int i = 0; i < 5; i++) ...[
               RotatedBox(
                 quarterTurns: 3,
@@ -57,66 +53,27 @@ class StepQueryHook extends HookWidget {
                 ),
               ),
             ],
-            // RotatedBox(
-            //   quarterTurns: 3,
-            //   child: Container(
-            //     width: 146,
-            //     color: col[4],
-            //     child: MySwitch(light: lights[1]),
-            //   ),
-            // ),
-            // RotatedBox(
-            //   quarterTurns: 3,
-            //   child: Container(
-            //     width: 146,
-            //     color: col[4],
-            //     child: MySwitch(light: lights[2]),
-            //   ),
-            // ),
-            // RotatedBox(
-            //   quarterTurns: 3,
-            //   child: Container(
-            //     width: 146,
-            //     color: col[4],
-            //     child: MySwitch(light: lights[3]),
-            //   ),
-            // ),
-            // RotatedBox(
-            //   quarterTurns: 3,
-            //   child: Container(
-            //     width: 146,
-            //     color: col[4],
-            //     child: MySwitch(light: lights[4]),
-            //   ),
-            // ),
-            // Container(
-            //   width: 15,
-            //   height: 146,
-            //   color: col[4],
-            // ),
-            // const MySpinner(),
-            // Container(
-            //   width: 13,
-            //   height: 146,
-            //   color: col[4],
-            // ),
+            Container(
+              width: 15,
+              height: 146,
+              color: col[4],
+            ),
+            MySpinner(
+              seconds: seconds,
+            ),
+            Container(
+              width: 13,
+              height: 146,
+              color: col[4],
+            ),
+            Container(
+              width: 10,
+              height: 146,
+              color: Colors.amber[100],
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-// class StepQueryHook extends HookWidget {
-//   const StepQueryHook({Key? key, required this.nums, required this.lights})
-//       : super(key: key);
-
-//   // const StepQueryHook({super.key, required this.num});
-//   final int nums;
-//   final lights;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Material(child: Text("kkk"));
-//   }
-// }

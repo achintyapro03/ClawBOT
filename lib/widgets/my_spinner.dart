@@ -10,14 +10,14 @@ var col = [
 ];
 
 class MySpinner extends StatefulWidget {
-  const MySpinner({super.key});
+  MySpinner({super.key, required this.seconds});
 
+  var seconds;
   @override
   State<MySpinner> createState() => MySpinnerState();
 }
 
 class MySpinnerState extends State<MySpinner> {
-  int seconds = 0;
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -44,9 +44,9 @@ class MySpinnerState extends State<MySpinner> {
             color: Colors.white,
           ),
           onChanged: (value) {
-            setState(() {
-              seconds = value.round();
-            });
+            // setState(() {
+            widget.seconds.value = value.round();
+            // });
           },
           // iconColor: Colors.black,
 

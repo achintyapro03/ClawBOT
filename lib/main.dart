@@ -53,6 +53,7 @@ class HomePageHook extends HookWidget {
     var stepQueryState =
         List.generate(15, (_) => List.generate(5, (_) => useState(false)));
 
+    var secondsState = List.generate(15, (_) => useState(0));
     final List<bool> stdState = <bool>[false, true];
 
     useEffect(() {
@@ -79,6 +80,7 @@ class HomePageHook extends HookWidget {
       if (isPlaying.value == true) {
         print("yeah boi now playing");
         print(stepQueryState);
+        print(secondsState);
       }
       print("Play / pause mode - ${isPlaying.value}");
 
@@ -202,6 +204,7 @@ class HomePageHook extends HookWidget {
                     : CustomPageHook(
                         stepQueryState: stepQueryState,
                         isPlaying: isPlaying,
+                        secondsState: secondsState,
                       ),
               ),
             ],
