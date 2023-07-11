@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 import "../widgets/my_toggle.dart";
 
 var col = [
@@ -9,21 +10,10 @@ var col = [
   const Color.fromARGB(255, 69, 71, 80)
 ];
 
-class StandardPage extends StatefulWidget {
-  const StandardPage({Key? key}) : super(key: key);
-
-  @override
-  State<StandardPage> createState() => _StandardPageState();
-}
-
-class _StandardPageState extends State<StandardPage> {
-  // final toggleKeyList = List<GlobalKey<MyToggleButtonState>>.filled(
-  //   5,
-  //   new GlobalKey<MyToggleButtonState>(),
-  // );
-
-  void createButtons() {}
-
+class StandardPageHook extends HookWidget {
+  StandardPageHook({Key? key, required this.toggleChangeStates})
+      : super(key: key);
+  var toggleChangeStates;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -70,7 +60,8 @@ class _StandardPageState extends State<StandardPage> {
                 Row(
                   children: [
                     for (int i = 0; i < 5; i++) ...[
-                      MyToggleButton(num: i + 1),
+                      MyToggleButtonHook(
+                          nums: i + 1, tc: toggleChangeStates[i]),
                     ]
                   ],
                 ),

@@ -49,12 +49,20 @@ class HomePageHook extends HookWidget {
     final onOff = useState(false);
     final lockPos = useState(false);
     final isPlaying = useState(false);
+    final toggleChange = useState(false);
 
     var stepQueryState =
         List.generate(15, (_) => List.generate(5, (_) => useState(false)));
 
     var secondsState = List.generate(15, (_) => useState(0));
-    final List<bool> stdState = <bool>[false, true];
+
+    var toggleChangeStates = [
+      useState(false),
+      useState(false),
+      useState(false),
+      useState(false),
+      useState(false),
+    ];
 
     useEffect(() {
       print("power changed to ${power.value}");
@@ -86,10 +94,24 @@ class HomePageHook extends HookWidget {
 
       return null;
     }, [isPlaying.value]);
-    // useEffect(() {
-    //   print("page changed to ${page.value}");
-    //   return null;
-    // }, [page.value]);
+
+    useEffect(() {
+      print("yeah boi change");
+      print([
+        toggleChangeStates[0].value,
+        toggleChangeStates[1].value,
+        toggleChangeStates[2].value,
+        toggleChangeStates[3].value,
+        toggleChangeStates[4].value,
+      ]);
+      return null;
+    }, [
+      toggleChangeStates[0].value,
+      toggleChangeStates[1].value,
+      toggleChangeStates[2].value,
+      toggleChangeStates[3].value,
+      toggleChangeStates[4].value,
+    ]);
 
     return Scaffold(
       appBar: AppBar(
@@ -200,7 +222,7 @@ class HomePageHook extends HookWidget {
               ),
               Material(
                 child: (page.value == 0)
-                    ? const StandardPage()
+                    ? StandardPageHook(toggleChangeStates: toggleChangeStates)
                     : CustomPageHook(
                         stepQueryState: stepQueryState,
                         isPlaying: isPlaying,

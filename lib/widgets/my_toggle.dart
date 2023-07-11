@@ -1,30 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 const List<Widget> icons = <Widget>[
   Icon(Icons.power),
   Icon(Icons.power_off),
 ];
 
-class MyToggleButton extends StatefulWidget {
-  // const MyToggleButton({super.key, required this.num});
-  const MyToggleButton({Key? key, required this.num}) : super(key: key);
-  final int num;
-  @override
-  State<MyToggleButton> createState() => MyToggleButtonState();
-}
+class MyToggleButtonHook extends HookWidget {
+  MyToggleButtonHook({Key? key, required this.nums, required this.tc})
+      : super(key: key);
 
-class MyToggleButtonState extends State<MyToggleButton> {
-  final List<bool> selectedState = <bool>[false, true];
+  final int nums;
+  var tc;
+
+  // final List<bool> selectedState = <bool>[false, true];
 
   @override
   Widget build(BuildContext context) {
+    final s1 = useState(false);
+    final s2 = useState(true);
+
+    // useEffect(() {
+    //   tc.value = true;
+    //   return null;
+    // }, [s1.value]);
     return Container(
-      key: widget.key,
       child: Column(
         children: [
           const SizedBox(width: 71),
           Text(
-            widget.num.toString(),
+            nums.toString(),
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -35,12 +40,15 @@ class MyToggleButtonState extends State<MyToggleButton> {
           ToggleButtons(
             direction: Axis.vertical,
             onPressed: (int index) {
-              setState(() {
-                // The button that is tapped is set to true, and the others to false.
-                for (int i = 0; i < selectedState.length; i++) {
-                  selectedState[i] = i == index;
-                }
-              });
+              if (index == 0) {
+                s1.value = true;
+                s2.value = false;
+                tc.value = true;
+              } else {
+                s2.value = true;
+                s1.value = false;
+                tc.value = false;
+              }
             },
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             selectedBorderColor: Colors.amber[700],
@@ -48,7 +56,7 @@ class MyToggleButtonState extends State<MyToggleButton> {
             fillColor: Colors.amber[200],
             color: Colors.amber[400],
             borderColor: Colors.amber,
-            isSelected: selectedState,
+            isSelected: [s1.value, s2.value],
             children: icons,
           ),
         ],

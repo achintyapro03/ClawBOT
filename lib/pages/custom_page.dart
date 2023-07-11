@@ -13,13 +13,6 @@ var col = [
   const Color.fromARGB(255, 69, 71, 80),
 ];
 
-// class CustomPage extends StatefulWidget {
-//   const CustomPage({super.key});
-
-//   @override
-//   State<CustomPage> createState() => _CustomPageState();
-// }
-
 class CustomPageHook extends HookWidget {
   CustomPageHook(
       {Key? key,
@@ -145,7 +138,7 @@ class CustomPageHook extends HookWidget {
               height: 25,
             ),
             Text(
-              "     1           2           3           4           5         seconds",
+              "           1           2           3           4           5          seconds",
               style: TextStyle(
                 color: col[3],
               ),
@@ -153,25 +146,25 @@ class CustomPageHook extends HookWidget {
             const SizedBox(
               height: 10,
             ),
-            AbsorbPointer(
-              absorbing: isPlaying.value,
-              child: Container(
-                height: 160,
-                width: 310,
-                decoration: BoxDecoration(
-                  color: col[4],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Scrollbar(
+            Container(
+              height: 160,
+              width: 310,
+              decoration: BoxDecoration(
+                color: col[4],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Scrollbar(
+                controller: myScrollController,
+
+                thumbVisibility: true, //always show scrollbar
+                thickness: 2, //width of scrollbar
+                scrollbarOrientation:
+                    ScrollbarOrientation.right, //which side to show scrollbar
+
+                child: SingleChildScrollView(
                   controller: myScrollController,
-
-                  thumbVisibility: true, //always show scrollbar
-                  thickness: 2, //width of scrollbar
-                  scrollbarOrientation:
-                      ScrollbarOrientation.right, //which side to show scrollbar
-
-                  child: SingleChildScrollView(
-                    controller: myScrollController,
+                  child: AbsorbPointer(
+                    absorbing: isPlaying.value,
                     child: Container(
                       color: col[4],
                       margin: const EdgeInsets.symmetric(
