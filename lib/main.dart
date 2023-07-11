@@ -1,6 +1,6 @@
-import "package:controller_app/pages/custom_page.dart";
-import "package:controller_app/pages/standard_page.dart";
-import "package:controller_app/widgets/hook_switch.dart";
+import "package:claw_bot/pages/custom_page.dart";
+import "package:claw_bot/pages/standard_page.dart";
+import "package:claw_bot/widgets/hook_switch.dart";
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 

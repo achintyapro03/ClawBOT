@@ -1,6 +1,6 @@
-import "package:controller_app/widgets/hook_switch.dart";
-import "package:controller_app/widgets/my_spinner.dart";
-// import "package:controller_app/widgets/my_switch.dart";
+import "package:claw_bot/widgets/hook_switch.dart";
+import "package:claw_bot/widgets/my_spinner.dart";
+// import "package:claw_bot/widgets/my_switch.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 // import "package:flutter/cupertino.dart";

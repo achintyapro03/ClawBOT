@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "controller_app" "\0"
+            VALUE "FileDescription", "claw_bot" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "controller_app" "\0"
+            VALUE "InternalName", "claw_bot" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "controller_app.exe" "\0"
-            VALUE "ProductName", "controller_app" "\0"
+            VALUE "OriginalFilename", "claw_bot.exe" "\0"
+            VALUE "ProductName", "claw_bot" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

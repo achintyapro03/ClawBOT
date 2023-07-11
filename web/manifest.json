@@ -1,6 +1,6 @@
 {
-    "name": "controller_app",
-    "short_name": "controller_app",
+    "name": "claw_bot",
+    "short_name": "claw_bot",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
