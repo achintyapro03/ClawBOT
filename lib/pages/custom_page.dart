@@ -14,23 +14,22 @@ var col = [
 ];
 
 class CustomPageHook extends HookWidget {
-  CustomPageHook(
-      {Key? key,
-      required this.stepQueryState,
-      required this.secondsState,
-      required this.isPlaying})
-      : super(key: key);
+  CustomPageHook({
+    Key? key,
+    required this.stepQueryState,
+    required this.secondsState,
+    required this.isPlaying,
+    required this.intOfSteps,
+  }) : super(key: key);
 
   // final _formKey = GlobalKey<FormState>();
   var stepQueryState;
   var secondsState;
   var isPlaying;
+  var intOfSteps;
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-
-    final intOfSteps = useState(1);
     final myScrollController = ScrollController();
     return Material(
       child: Container(

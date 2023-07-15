@@ -11,6 +11,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import "dart:math";
 
 import 'widgets/widgets.dart';
 
@@ -104,8 +105,6 @@ class FindDevicesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void onTapFun() async {}
-
     return Scaffold(
       body: Container(
         margin: const EdgeInsets.fromLTRB(10, 45, 10, 20),
@@ -154,7 +153,10 @@ class FindDevicesScreen extends StatelessWidget {
                                           onPressed: () => Navigator.of(context)
                                               .push(MaterialPageRoute(
                                                   builder: (context) =>
-                                                      DeviceScreen(device: d))),
+                                                      DeviceScreen(
+                                                        device: d,
+                                                        services: [],
+                                                      ))),
                                         );
                                       }
                                       return Text(snapshot.data.toString());
@@ -180,21 +182,16 @@ class FindDevicesScreen extends StatelessWidget {
                               List<BluetoothService> services =
                                   await r.device.discoverServices();
 
-                              services.forEach(
-                                (service) async {
-                                  var characteristics = service.characteristics;
-                                  for (BluetoothCharacteristic c
-                                      in characteristics) {
-                                    await c.write(utf8.encode(
-                                        "connection successful olakhawkhqkwahdk24392839itu576576!!\n"));
-                                    break;
-                                  }
-                                },
-                              );
+                              // writeToBLE(
+                              //     services, "connection successful 123456!!\n");
+
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return DeviceScreen(device: r.device);
+                                    return DeviceScreen(
+                                      device: r.device,
+                                      services: services,
+                                    );
                                   },
                                 ),
                               );
@@ -232,8 +229,10 @@ class FindDevicesScreen extends StatelessWidget {
 }
 
 class DeviceScreen extends StatelessWidget {
-  const DeviceScreen({Key? key, required this.device}) : super(key: key);
+  const DeviceScreen({Key? key, required this.device, required this.services})
+      : super(key: key);
 
+  final List<BluetoothService> services;
   final BluetoothDevice device;
 
   @override
@@ -285,7 +284,7 @@ class DeviceScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: const HomePageHook(),
+      body: HomePageHook(services: services),
     );
   }
 
@@ -311,38 +310,55 @@ var col = [
   const Color.fromARGB(255, 69, 71, 80)
 ];
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+// class MyApp extends StatefulWidget {
+//   const MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
+//   @override
+//   State<MyApp> createState() => _MyAppState();
+// }
 
-class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        fontFamily: GoogleFonts.lato().fontFamily,
-      ),
-      home: const HomePageHook(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
+// class _MyAppState extends State<MyApp> {
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       theme: ThemeData(
+//         useMaterial3: true,
+//         fontFamily: GoogleFonts.lato().fontFamily,
+//       ),
+//       home: const HomePageHook(),
+//       debugShowCheckedModeBanner: false,
+//     );
+//   }
+// }
 
 class HomePageHook extends HookWidget {
-  const HomePageHook({super.key});
+  const HomePageHook({super.key, required this.services});
+
+  final List<BluetoothService> services;
 
   @override
   Widget build(BuildContext context) {
+    void writeToBLE(List<BluetoothService> services, String instruction) async {
+      services.forEach(
+        (service) async {
+          var characteristics = service.characteristics;
+          for (BluetoothCharacteristic c in characteristics) {
+            await c.write(utf8.encode(instruction));
+            break;
+          }
+        },
+      );
+    }
+
     final page = useState(0);
     final power = useState(0.0);
+    final powerInt = useState(0);
     final onOff = useState(false);
     final lockPos = useState(false);
     final isPlaying = useState(false);
+    final intOfSteps = useState(1);
+
     // final toggleChange = useState(false);
 
     var stepQueryState =
@@ -358,46 +374,83 @@ class HomePageHook extends HookWidget {
       useState(false),
     ];
 
-    useEffect(() {
-      print("power changed to ${power.value}");
-      return null;
-    }, [power.value]);
+    // ISA
+    // op codes
+    // 01# - power value
+    // 02# - page number
+    // 03# - onOff state
+    // 04# - lock state
+    // 05# - play
 
     useEffect(() {
-      print("page changed to ${page.value}");
+      powerInt.value = power.value.toInt();
+      return null;
+    }, [power.value]);
+    useEffect(() {
+      writeToBLE(services, "1#${powerInt.value}#\n");
+      return null;
+    }, [powerInt.value]);
+
+    useEffect(() {
+      writeToBLE(services, "2#${page.value}#\n");
       return null;
     }, [page.value]);
 
     useEffect(() {
-      print("onoff changed to ${onOff.value}");
+      writeToBLE(services, "3#${(onOff.value == true) ? 1 : 0}#\n");
       return null;
     }, [onOff.value]);
 
     useEffect(() {
-      print("lockPos changed to ${lockPos.value}");
+      writeToBLE(services, "4#${(lockPos.value == true) ? 1 : 0}#\n");
+
       return null;
     }, [lockPos.value]);
 
     useEffect(() {
       if (isPlaying.value == true) {
-        print("yeah boi now playing");
-        print(stepQueryState);
-        print(secondsState);
+        String inst = "5#${intOfSteps.value}#";
+        for (int i = 0; i < 15; i++) {
+          int sum = 0;
+          for (int j = 0; j < 5; j++) {
+            sum = sum +
+                (((stepQueryState[i][j].value) ? 1 : 0) * pow(2, j)).toInt();
+          }
+          inst = "$inst$sum#";
+        }
+
+        for (int i = 0; i < 15; i++) {
+          inst = "$inst${secondsState[i].value}#";
+        }
+
+        inst = "$inst\n";
+
+        print("isplaying");
+        // print(inst);
+
+        writeToBLE(services, inst);
       }
-      print("Play / pause mode - ${isPlaying.value}");
 
       return null;
     }, [isPlaying.value]);
 
     useEffect(() {
-      print("yeah boi change");
-      print([
-        toggleChangeStates[0].value,
-        toggleChangeStates[1].value,
-        toggleChangeStates[2].value,
-        toggleChangeStates[3].value,
-        toggleChangeStates[4].value,
-      ]);
+      // print("yeah boi change");
+      // print([
+      //   toggleChangeStates[0].value,
+      //   toggleChangeStates[1].value,
+      //   toggleChangeStates[2].value,
+      //   toggleChangeStates[3].value,
+      //   toggleChangeStates[4].value,
+      // ]);
+
+      String inst = "6#";
+      for (int i = 0; i < 5; i++) {
+        inst = "$inst${(toggleChangeStates[i].value) ? "1" : "0"}#";
+      }
+
+      inst = "$inst\n";
+      writeToBLE(services, inst);
       return null;
     }, [
       toggleChangeStates[0].value,
@@ -521,6 +574,7 @@ class HomePageHook extends HookWidget {
                         stepQueryState: stepQueryState,
                         isPlaying: isPlaying,
                         secondsState: secondsState,
+                        intOfSteps: intOfSteps,
                       ),
               ),
             ],
