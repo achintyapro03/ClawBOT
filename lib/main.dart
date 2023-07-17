@@ -409,7 +409,7 @@ class HomePageHook extends HookWidget {
 
     useEffect(() {
       if (isPlaying.value == true) {
-        String inst = "5#${intOfSteps.value}#";
+        String inst = "5#${intOfSteps.value}#1#";
         for (int i = 0; i < 15; i++) {
           int sum = 0;
           for (int j = 0; j < 5; j++) {
@@ -428,6 +428,9 @@ class HomePageHook extends HookWidget {
         print("isplaying");
         // print(inst);
 
+        writeToBLE(services, inst);
+      } else {
+        String inst = "5#${intOfSteps.value}#0#\n";
         writeToBLE(services, inst);
       }
 
@@ -532,6 +535,9 @@ class HomePageHook extends HookWidget {
                       activeColor: Colors.amber[200],
                       inactiveColor: col[3],
                       onChanged: (value) {
+                        // power.value = value;
+                      },
+                      onChangeEnd: (value) {
                         power.value = value;
                       },
                     ),
