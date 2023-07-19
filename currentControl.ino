@@ -53,31 +53,30 @@ void incCurrentConst(int del)
     }
 }
 
-void setDirectionAll(int dir)
-{
-    for (int i = 9; i <= 13; i++)
-    {
-        digitalWrite(i, dir);
-    }
-}
+// void setDirectionAll(int dir[]){
+//   for(int i = 9; i <= 13; i++){
+//     digitalWrite(i, dir[i]);
+//     Serial.println(dir[i]);
+//   }
+// }
 
 void getParams(String str, int nums[])
 {
     int curr = 0;
     int counter = 0;
 
-    Serial.println(str);
+    // Serial.println(str);
     for (int i = 0; i < str.length(); i++)
     {
-        Serial.println(str[i]);
+        // Serial.println(str[i]);
         if ((int)str[i] >= 48 && (int)str[i] <= 57)
         {
             curr = curr * 10 + ((int)str[i] - 48);
         }
         else if ((int)str[i] == 35)
         {
-            Serial.print("Calculated : ");
-            Serial.println(curr);
+            // Serial.print("Calculated : ");
+            // Serial.println(curr);
             nums[counter] = curr;
             counter++;
             curr = 0;
@@ -116,7 +115,7 @@ void decodeStates(int nums[])
         int idx = 4;
         while (d > 0)
         {
-            if (temp > d)
+            if (temp >= d)
             {
                 temp = temp - d;
                 states[i - 3][idx] = 1;
@@ -133,7 +132,7 @@ void decodeStates(int nums[])
 
 void decodeSeconds(int nums[])
 {
-    for (int i = 13 : i < 33; i++)
+    for (int i = 13; i < 33; i++)
     {
         seconds[i - 18] = nums[i];
     }
@@ -176,6 +175,13 @@ void setup()
     {
         seconds[i] = 0;
     }
+
+    // int dirs[5] = {0, 0, 0, 0, 0};
+    // setDirectionAll(dirs);
+    for (int i = 9; i <= 13; i++)
+    {
+        digitalWrite(i, 0);
+    }
 }
 
 void loop()
@@ -205,7 +211,7 @@ void loop()
         }
         Serial.println(inst);
 
-        int nums[100];
+        int nums[40];
         getParams(inst, nums);
 
         if (nums[0] == 1)
@@ -233,6 +239,12 @@ void loop()
             numOfSteps = nums[1];
             decodeStates(nums);
             decodeSeconds(nums);
+
+            for (int i = 0; i < 15; i++)
+            {
+                Serial.println(seconds[i]);
+            }
+
             isPlaying = nums[2];
         }
         else if (nums[0] == 6)
@@ -251,14 +263,24 @@ void loop()
 
     if (page == 0)
     {
-        setDirectionAll(0);
+
+        Serial.println("in page 0");
+
+        for (int i = 9; i <= 13; i++)
+        {
+            digitalWrite(i, 0);
+        }
 
         analogWrite(RPWM, 255);
         myDelay(4400);
 
         analogWrite(RPWM, 0);
         myDelay(400);
-        setDirectionAll(1);
+
+        for (int i = 9; i <= 13; i++)
+        {
+            digitalWrite(i, 1);
+        }
         myDelay(400);
 
         analogWrite(RPWM, 255);
@@ -270,8 +292,34 @@ void loop()
 
     else
     {
+        // if(isPlaying == 1){
+
+        // }
+        myDelay(2000);
+
         if (isPlaying == 1)
         {
+            Serial.println("play on");
+            for (int i = 0; i < numOfSteps && bleYes == 0; i++)
+            {
+
+                analogWrite(RPWM, 0);
+                myDelay(400);
+                for (int j = 9; j <= 13; j++)
+                {
+                    analogWrite(oneRelPins[j - 9], (states[i][j - 9] == 1) ? 255 : 0);
+                }
+                myDelay(400);
+
+                analogWrite(RPWM, 255);
+                myDelay(seconds[i] * 1000);
+            }
+        }
+        else
+        {
+            Serial.println("play off");
+
+            myDelay(2000);
         }
     }
 }

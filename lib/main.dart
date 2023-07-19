@@ -408,31 +408,28 @@ class HomePageHook extends HookWidget {
     }, [lockPos.value]);
 
     useEffect(() {
-      if (isPlaying.value == true) {
-        String inst = "5#${intOfSteps.value}#1#";
-        for (int i = 0; i < 15; i++) {
-          int sum = 0;
-          for (int j = 0; j < 5; j++) {
-            sum = sum +
-                (((stepQueryState[i][j].value) ? 1 : 0) * pow(2, j)).toInt();
-          }
-          inst = "$inst$sum#";
+      // if (isPlaying.value == true) {
+      String inst = "5#${intOfSteps.value}#${(isPlaying.value) ? 1 : 0}#";
+      for (int i = 0; i < 15; i++) {
+        int sum = 0;
+        for (int j = 0; j < 5; j++) {
+          sum = sum +
+              (((stepQueryState[i][j].value) ? 1 : 0) * pow(2, j)).toInt();
         }
-
-        for (int i = 0; i < 15; i++) {
-          inst = "$inst${secondsState[i].value}#";
-        }
-
-        inst = "$inst\n";
-
-        print("isplaying");
-        // print(inst);
-
-        writeToBLE(services, inst);
-      } else {
-        String inst = "5#${intOfSteps.value}#0#\n";
-        writeToBLE(services, inst);
+        inst = "$inst$sum#";
       }
+
+      for (int i = 0; i < 15; i++) {
+        inst = "$inst${secondsState[i].value}#";
+      }
+
+      inst = "$inst\n";
+
+      print("isplaying");
+      // print(inst);
+
+      writeToBLE(services, inst);
+      // }
 
       return null;
     }, [isPlaying.value]);
@@ -535,9 +532,6 @@ class HomePageHook extends HookWidget {
                       activeColor: Colors.amber[200],
                       inactiveColor: col[3],
                       onChanged: (value) {
-                        // power.value = value;
-                      },
-                      onChangeEnd: (value) {
                         power.value = value;
                       },
                     ),
@@ -717,6 +711,3 @@ class HomePageHook extends HookWidget {
 //   }
 // }
 // import 'package:flutter/material.dart';
-
-
-
