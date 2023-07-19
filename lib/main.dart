@@ -15,10 +15,6 @@ import "dart:math";
 
 import 'widgets/widgets.dart';
 
-// void main() {
-//   runApp(const MyApp());
-// }
-
 void main() {
   if (Platform.isAndroid) {
     WidgetsFlutterBinding.ensureInitialized();
@@ -310,28 +306,6 @@ var col = [
   const Color.fromARGB(255, 69, 71, 80)
 ];
 
-// class MyApp extends StatefulWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   State<MyApp> createState() => _MyAppState();
-// }
-
-// class _MyAppState extends State<MyApp> {
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       theme: ThemeData(
-//         useMaterial3: true,
-//         fontFamily: GoogleFonts.lato().fontFamily,
-//       ),
-//       home: const HomePageHook(),
-//       debugShowCheckedModeBanner: false,
-//     );
-//   }
-// }
-
 class HomePageHook extends HookWidget {
   const HomePageHook({super.key, required this.services});
 
@@ -374,13 +348,13 @@ class HomePageHook extends HookWidget {
       useState(false),
     ];
 
-    // ISA
-    // op codes
+    // OP codes
     // 01# - power value
     // 02# - page number
     // 03# - onOff state
     // 04# - lock state
-    // 05# - play
+    // 05# - toggle btns
+    // 06# - play
 
     useEffect(() {
       powerInt.value = power.value.toInt();
@@ -435,15 +409,6 @@ class HomePageHook extends HookWidget {
     }, [isPlaying.value]);
 
     useEffect(() {
-      // print("yeah boi change");
-      // print([
-      //   toggleChangeStates[0].value,
-      //   toggleChangeStates[1].value,
-      //   toggleChangeStates[2].value,
-      //   toggleChangeStates[3].value,
-      //   toggleChangeStates[4].value,
-      // ]);
-
       String inst = "6#";
       for (int i = 0; i < 5; i++) {
         inst = "$inst${(toggleChangeStates[i].value) ? "1" : "0"}#";
@@ -584,130 +549,3 @@ class HomePageHook extends HookWidget {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   final butKey = GlobalKey<_MyHomePageState>();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       // title: 'Toggle Buttons Demo',
-//       // theme: ThemeData(
-//       //   primarySwatch: Colors.blue,
-//       // ),
-//       // home: MyHomePage(key: butKey),
-
-//       home: Scaffold(
-//         // appBar: AppBar(
-//         //   title: Text('Toggle Buttons Demo'),
-//         // ),
-//         body: MyHomePage(key: butKey),
-//         floatingActionButton: FloatingActionButton(
-//           child: Text("Press"),
-//           onPressed: () {
-//             final b = butKey.currentState!.buttonStates;
-
-//             int t = 0;
-//             int f = 0;
-//             for (var i in b) {
-//               if (i)
-//                 t++;
-//               else
-//                 f++;
-//             }
-
-//             print("t = $t, f = $f");
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({Key? key}) : super(key: key);
-//   @override
-//   _MyHomePageState createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   int numberOfButtons = 0;
-//   List<bool> buttonStates = [];
-
-//   void createButtons() {
-//     buttonStates = List<bool>.filled(numberOfButtons, false);
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Toggle Buttons Demo'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             TextField(
-//               keyboardType: TextInputType.number,
-//               onChanged: (value) {
-//                 setState(() {
-//                   numberOfButtons = int.tryParse(value) ?? 0;
-//                   createButtons();
-//                 });
-//               },
-//             ),
-//             SizedBox(height: 20),
-//             Wrap(
-//               children: List<Widget>.generate(numberOfButtons, (index) {
-//                 return Padding(
-//                   padding: EdgeInsets.all(5),
-//                   child: ToggleButton(
-//                     index: index,
-//                     isPressed: buttonStates[index],
-//                     onPressed: () {
-//                       setState(() {
-//                         buttonStates[index] = !buttonStates[index];
-//                       });
-//                     },
-//                   ),
-//                 );
-//               }),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class ToggleButton extends StatelessWidget {
-//   final int index;
-//   final bool isPressed;
-//   final Function onPressed;
-
-//   ToggleButton(
-//       {required this.index, required this.isPressed, required this.onPressed});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ElevatedButton(
-//       style: ElevatedButton.styleFrom(
-//         primary: isPressed ? Colors.blue : Colors.grey,
-//         padding: EdgeInsets.all(16),
-//       ),
-//       onPressed: () => onPressed(),
-//       child: Text(
-//         'Button $index',
-//         style: TextStyle(color: Colors.white),
-//       ),
-//     );
-//   }
-// }
-// import 'package:flutter/material.dart';
