@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-SoftwareSerial bt(2, 3); /* (Rx,Tx) */
+SoftwareSerial bt(2, 3); // (Rx,Tx)
 
 int RPWM = 5;
 int LPWM = 6;
-// timer 0
+
 int L_EN = 7;
 int R_EN = 8;
 
@@ -26,8 +26,6 @@ String buff;
 
 void decCurrentConst(int del)
 {
-    // Serial.println(power);
-
     for (int i = 255; i > power; i--)
     {
         delay(del);
@@ -53,30 +51,19 @@ void incCurrentConst(int del)
     }
 }
 
-// void setDirectionAll(int dir[]){
-//   for(int i = 9; i <= 13; i++){
-//     digitalWrite(i, dir[i]);
-//     Serial.println(dir[i]);
-//   }
-// }
-
 void getParams(String str, int nums[])
 {
     int curr = 0;
     int counter = 0;
 
-    // Serial.println(str);
     for (int i = 0; i < str.length(); i++)
     {
-        // Serial.println(str[i]);
         if ((int)str[i] >= 48 && (int)str[i] <= 57)
         {
             curr = curr * 10 + ((int)str[i] - 48);
         }
         else if ((int)str[i] == 35)
         {
-            // Serial.print("Calculated : ");
-            // Serial.println(curr);
             nums[counter] = curr;
             counter++;
             curr = 0;
@@ -140,8 +127,8 @@ void decodeSeconds(int nums[])
 
 void setup()
 {
-    bt.begin(9600);     /* Define baud rate for software serial communication */
-    Serial.begin(9600); /* Define baud rate for serial communication */
+    bt.begin(9600);
+    Serial.begin(9600);
 
     for (int i = 4; i <= 13; i++)
     {
@@ -157,7 +144,7 @@ void setup()
 
     for (int i = 0; i < 5; i++)
     {
-        analogWrite(oneRelPins[i], 0);
+        analogWrite(oneRelPins[i], 255);
     }
 
     digitalWrite(R_EN, HIGH);
@@ -176,8 +163,6 @@ void setup()
         seconds[i] = 0;
     }
 
-    // int dirs[5] = {0, 0, 0, 0, 0};
-    // setDirectionAll(dirs);
     for (int i = 9; i <= 13; i++)
     {
         digitalWrite(i, 0);
@@ -186,13 +171,24 @@ void setup()
 
 void loop()
 {
-    // incCurrentConst(2, bleYes);
-    // delay(3000);
-    // decCurrentConst(2, bleYes);
-    // delay(3000);'
+    // analogWrite(RPWM, 0);
+    // delay(400);
+    // for(int i = 9; i <= 13; i++){
+    //   digitalWrite(i, 1);
+    // }
+    // analogWrite(RPWM, 255);
+    // delay(2000);
+    // analogWrite(RPWM, 0);
+    // delay(400);
+    // for(int i = 9; i <= 13; i++){
+    //   digitalWrite(i, 0);
+    // }
+    // analogWrite(RPWM, 255);
+    // digitalWrite(10, 0);
 
-    analogWrite(RPWM, 255);
-    // analogWrite(A3, 255);
+    // delay(2000);
+
+    // return;
 
     if (bt.available() || bleYes == 1)
     {
@@ -255,7 +251,6 @@ void loop()
             {
                 analogWrite(oneRelPins[i - 1], (nums[i] == 1) ? 255 : 0);
             }
-            // delay(50);
 
             incCurrentConst(1);
         }
@@ -292,13 +287,17 @@ void loop()
 
     else
     {
-        // if(isPlaying == 1){
-
-        // }
-        myDelay(2000);
-
         if (isPlaying == 1)
         {
+            // for(int i = 0; i <= 5; i++){
+            //   analogWrite(oneRelPins[i], 0);
+            // }
+            analogWrite(A1, 255);
+            analogWrite(A2, 255);
+            analogWrite(A3, 255);
+            analogWrite(A4, 255);
+            analogWrite(A5, 255);
+
             Serial.println("play on");
             for (int i = 0; i < numOfSteps && bleYes == 0; i++)
             {
@@ -307,7 +306,7 @@ void loop()
                 myDelay(400);
                 for (int j = 9; j <= 13; j++)
                 {
-                    analogWrite(oneRelPins[j - 9], (states[i][j - 9] == 1) ? 255 : 0);
+                    digitalWrite(j, states[i][j - 9]);
                 }
                 myDelay(400);
 
