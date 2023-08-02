@@ -26,6 +26,8 @@ String buff;
 
 void decCurrentConst(int del)
 {
+    // Serial.println(power);
+
     for (int i = 255; i > power; i--)
     {
         delay(del);
@@ -114,6 +116,9 @@ void decodeStates(int nums[])
             d = d / 2;
             idx--;
         }
+        int x = states[i - 3][3];
+        states[i - 3][3] = states[i - 3][4];
+        states[i - 3][4] = x;
     }
 }
 
@@ -176,14 +181,14 @@ void loop()
     // for(int i = 9; i <= 13; i++){
     //   digitalWrite(i, 1);
     // }
-    // analogWrite(RPWM, 255);
+    // analogWrite(RPWM, power);
     // delay(2000);
     // analogWrite(RPWM, 0);
     // delay(400);
     // for(int i = 9; i <= 13; i++){
     //   digitalWrite(i, 0);
     // }
-    // analogWrite(RPWM, 255);
+    // analogWrite(RPWM, power);
     // digitalWrite(10, 0);
 
     // delay(2000);
@@ -266,7 +271,7 @@ void loop()
             digitalWrite(i, 0);
         }
 
-        analogWrite(RPWM, 255);
+        analogWrite(RPWM, power);
         myDelay(4400);
 
         analogWrite(RPWM, 0);
@@ -278,7 +283,7 @@ void loop()
         }
         myDelay(400);
 
-        analogWrite(RPWM, 255);
+        analogWrite(RPWM, power);
         myDelay(2400);
 
         analogWrite(RPWM, 0);
@@ -301,16 +306,17 @@ void loop()
             Serial.println("play on");
             for (int i = 0; i < numOfSteps && bleYes == 0; i++)
             {
-
+                Serial.print("Step number : ");
+                Serial.println(i);
                 analogWrite(RPWM, 0);
                 myDelay(400);
                 for (int j = 9; j <= 13; j++)
                 {
-                    digitalWrite(j, states[i][j - 9]);
+                    digitalWrite(j, 1 - states[i][j - 9]);
                 }
                 myDelay(400);
 
-                analogWrite(RPWM, 255);
+                analogWrite(RPWM, power);
                 myDelay(seconds[i] * 1000);
             }
         }
